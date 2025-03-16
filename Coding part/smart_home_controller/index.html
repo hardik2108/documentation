@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head>
+    <meta charset='UTF-8'>
+    <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+    .sensor-box { background: white; border: 1px solid #ddd; padding: 20px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .status-ok { color: #2ecc71; display: inline; }
+    .status-warning { color: #e74c3c; display: inline; }
+    .status-label { display: inline; margin-right: 10px; }
+    .value { font-size: 24px; margin: 10px 0; }
+    .unit { font-size: 14px; color: #666; }
+
+    .device-status { margin: 10px 0; }
+    .device-on { color: #2ecc71; font-weight: bold; }
+    .device-off { color: #e74c3c; font-weight: bold; }
+
+    </style>
+    
+    <!--Add JavaScript for real-time updates-->
+    <script>     
+    async function updateSensorData() {
+      try {
+        const response = await fetch('/api/sensor-data');
+        const data = await response.json();
+        updateUI(data);
+      } catch (error) {
+        console.error('Error fetching sensor data:', error);
+      }
+    }
+    
+    function updateUI(data) {
+      const temp = data.temperature;
+      const humidity = data.humidity;
+
+      // Update device statuses
+      const lightStatus = document.getElementById('light-status');
+      const heaterStatus = document.getElementById('heater-status');
+      const humidifierStatus = document.getElementById('humidifier-status');
+
+      lightStatus.textContent = data.light ? 'ON' : 'OFF';
+      lightStatus.className = data.light ? 'device-on' : 'device-off';
+
+      heaterStatus.textContent = data.heater ? 'ON' : 'OFF';
+      heaterStatus.className = data.heater ? 'device-on' : 'device-off';
+
+      humidifierStatus.textContent = data.humidifier ? 'ON' : 'OFF';
+      humidifierStatus.className = data.humidifier ? 'device-on' : 'device-off';
+    
+    // Update temperature with threshold checks
+      document.getElementById('temperature').textContent = temp;
+      const tempEl = document.getElementById('temp-box');
+      if (temp < 20) {
+        tempEl.style.borderColor = '#3498db';  // Blue for cold
+        document.getElementById('temp-status').textContent = 'Too Cold';
+      } else if (temp > 28) {
+        tempEl.style.borderColor = '#e74c3c';  // Red for hot
+        document.getElementById('temp-status').textContent = 'Too Hot';
+      } else {
+        tempEl.style.borderColor = '#2ecc71';  // Green for normal
+        document.getElementById('temp-status').textContent = 'Normal';
+      }
+    
+    // Update humidity with threshold check
+      document.getElementById('humidity').textContent = humidity;
+      const humEl = document.getElementById('humidity-box');
+      if (humidity > 60) {
+        humEl.style.borderColor = '#e74c3c';
+        document.getElementById('humidity-status').textContent = 'Too High';
+      } else {
+        humEl.style.borderColor = '#2ecc71';
+        document.getElementById('humidity-status').textContent = 'Normal';
+      }
+    }
+    
+    // Set update interval
+    setInterval(updateSensorData, 2000);  // Update every 2 seconds
+    updateSensorData(); // Initial update
+    </script></head><body>
+    
+    <!--Temperature box-->
+    <div id='temp-box' class='sensor-box'>
+    <h2>Temperature</h2>
+    char temp_str[100];
+    snprintf(temp_str, sizeof(temp_str), 
+            "<div class='value'><span id='temperature'>%d.%d</span><span class='unit'>°C</span></div>", 
+            temperature / 10, temperature % 10);
+    strcat(response, temp_str);
+    <div id='temp-status'></div>
+    </div>
+    
+    <!--Humidity box-->
+    <div id='humidity-box' class='sensor-box'>
+    <h2>Humidity</h2>
+    char humid_str[100];
+    snprintf(humid_str, sizeof(humid_str), 
+            "<div class='value'><span id='humidity'>%d.%d</span><span class='unit'>%%</span></div>", 
+            humidity / 10, humidity % 10);
+    strcat(response, humid_str);
+    <div id='humidity-status'></div>
+    </div>
+    
+    </body></html>
