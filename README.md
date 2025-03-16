@@ -16,7 +16,6 @@ ComfortSphere is an advanced IoT-enabled smart home system designed to optimize 
 - **Pinecone Microcontroller**: Manages system operations and real-time data processing.
 - **DHT22 Sensor**: Measures temperature and humidity for climate control.
 - **HC-SR501 PIR Motion Sensor**: Detects occupancy to automate energy-saving features.
-- **TSL2561 Light Sensor**: Adjusts lighting based on real-time light intensity.
 - **Relay Modules**: Controls HVAC systems and lighting.
 
 ### Software
@@ -44,10 +43,6 @@ ComfortSphere is an advanced IoT-enabled smart home system designed to optimize 
 - **Voice Assistant Integration** (Alexa, Google Home)
 - **Machine Learning Algorithms** for advanced environmental predictions
 - **Additional Sensor Support** (air quality, CO2 monitoring)
-
-## Contributing
-We welcome contributions to improve ComfortSphere! Feel free to submit issues or pull requests via [GitHub](https://github.com/hardik2108/documentation).
-
 
 ## Contact
 For inquiries, reach out to the development team:
